@@ -9,13 +9,17 @@ import com.example.srb.core.pojo.entity.Dict;
 import com.example.srb.core.pojo.entity.dto.ExcelDictDTO;
 import com.example.srb.core.service.DictService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -28,6 +32,13 @@ import java.util.List;
 @Service
 @Slf4j
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
+    @Resource
+    private RedisTemplate redisTemplate;
+
+    /**
+     * Excel数据导入
+     * @param inputStream Excel文件
+     */
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void importData(InputStream inputStream) {
@@ -35,6 +46,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         log.info("Excel导入成功");
     }
 
+    /**
+     * Excel数据导出
+     * @return 数据对象
+     */
     @Override
     public List<ExcelDictDTO> listDictData() {
         List<Dict> dictList = baseMapper.selectList(null);
@@ -49,8 +64,26 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         return excelDictDTOList;
     }
 
+    /**
+     * 树形列表展示
+     * @param parentId 父级id
+     * @return 数据内容
+     */
     @Override
     public List<Dict> listByParentId(Long parentId) {
+        // 若redis连接不上，会抛异常，但业务不能终止，可以从数据库中查询，因此需要try catch捕获
+        try {
+            log.info("从redis获取数据");
+            // 首先查询redis中是否有数据列表
+            List<Dict> redisDictList = (List<Dict>) redisTemplate.opsForValue().get("srb:core:dictList:" + parentId);
+            // 若存在直接返回数据列表
+            if (redisDictList != null) {
+                return redisDictList;
+            }
+        } catch (Exception e) {
+            log.error("redis服务器异常:" + ExceptionUtils.getStackTrace(e));
+        }
+        // 若不存在则查询数据库
         QueryWrapper<Dict> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("parent_id", parentId);
         List<Dict> dictList = baseMapper.selectList(queryWrapper);
@@ -58,6 +91,16 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
             boolean hasChildren = hasChildren(dict.getId());
             dict.setHasChildren(hasChildren);
         });
+
+        // 将数据存入redis
+        try {
+            log.info("数据存入redis");
+            redisTemplate.opsForValue().set("srb:core:dictList:" + parentId, dictList, 5, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            log.error("redis服务器异常:" + ExceptionUtils.getStackTrace(e));
+        }
+
+        // 返回数据列表
         return dictList;
     }
 
