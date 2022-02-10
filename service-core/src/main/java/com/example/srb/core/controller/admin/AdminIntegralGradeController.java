@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Api("积分等级管理")
+@Api(tags = "积分等级管理")
 @CrossOrigin
 @RestController
 @RequestMapping("/admin/core/integralGrade")

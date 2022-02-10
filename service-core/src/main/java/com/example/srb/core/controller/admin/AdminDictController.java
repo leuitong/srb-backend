@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
-@Api("积分等级管理")
+@Api(tags = "积分等级管理")
 @CrossOrigin
 @RestController
 @RequestMapping("/admin/core/dict")
