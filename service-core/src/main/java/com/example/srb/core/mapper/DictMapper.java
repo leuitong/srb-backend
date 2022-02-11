@@ -2,7 +2,7 @@ package com.example.srb.core.mapper;
 
 import com.example.srb.core.pojo.entity.Dict;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.srb.core.pojo.entity.dto.ExcelDictDTO;
+import com.example.srb.core.pojo.dto.ExcelDictDTO;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.srb.core.listener.ExcelDictDTOListener;
 import com.example.srb.core.mapper.DictMapper;
 import com.example.srb.core.pojo.entity.Dict;
-import com.example.srb.core.pojo.entity.dto.ExcelDictDTO;
+import com.example.srb.core.pojo.dto.ExcelDictDTO;
 import com.example.srb.core.service.DictService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;

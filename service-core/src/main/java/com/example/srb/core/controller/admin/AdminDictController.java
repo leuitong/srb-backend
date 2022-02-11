@@ -5,7 +5,7 @@ import com.example.srb.common.exception.BusinessException;
 import com.example.srb.common.result.R;
 import com.example.srb.common.result.ResponseEnum;
 import com.example.srb.core.pojo.entity.Dict;
-import com.example.srb.core.pojo.entity.dto.ExcelDictDTO;
+import com.example.srb.core.pojo.dto.ExcelDictDTO;
 import com.example.srb.core.service.DictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

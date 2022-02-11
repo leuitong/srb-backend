@@ -2,7 +2,7 @@ package com.example.srb.core.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.srb.core.pojo.entity.Dict;
-import com.example.srb.core.pojo.entity.dto.ExcelDictDTO;
+import com.example.srb.core.pojo.dto.ExcelDictDTO;
 
 import java.io.InputStream;
 import java.util.List;
