@@ -1,8 +1,10 @@
 package com.example.srb.core.service;
 
-import com.example.srb.core.pojo.entity.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.srb.core.pojo.entity.UserInfo;
+import com.example.srb.core.pojo.vo.LoginVO;
 import com.example.srb.core.pojo.vo.RegisterVO;
+import com.example.srb.core.pojo.vo.UserInfoVO;
 
 /**
  * <p>
@@ -15,4 +17,6 @@ import com.example.srb.core.pojo.vo.RegisterVO;
 public interface UserInfoService extends IService<UserInfo> {
 
     void register(RegisterVO registerVO);
+
+    UserInfoVO login(LoginVO loginVO, String ip);
 }
