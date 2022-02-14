@@ -1,6 +1,7 @@
 package com.example.srb.core.controller.api;
 
 
+import com.example.srb.base.utils.JwtUtils;
 import com.example.srb.common.exception.Assert;
 import com.example.srb.common.result.R;
 import com.example.srb.common.result.ResponseEnum;
@@ -74,6 +75,19 @@ public class UserInfoController {
         UserInfoVO userInfoVO = userInfoService.login(loginVO, ip);
 
         return R.ok().data("userInfo", userInfoVO);
+    }
+
+    @ApiOperation("校验令牌")
+    @GetMapping("/checkToken")
+    public R checkToken(HttpServletRequest httpServletRequest) {
+        String token = httpServletRequest.getHeader("token");
+        boolean b = JwtUtils.checkToken(token);
+        if (b) {
+            return R.ok();
+        }else {
+            return R.setResult(ResponseEnum.LOGIN_AUTH_ERROR);
+        }
+
     }
 }
 
