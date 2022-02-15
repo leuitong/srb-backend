@@ -36,4 +36,16 @@ public class AdminUserInfoController {
         IPage<UserInfo> pageModel = userInfoService.listPage(pageParam, userInfoQuery);
         return R.ok().data("pageModel", pageModel);
     }
+
+
+    @ApiOperation("锁定账户")
+    @PutMapping("/lock/{id}/{status}")
+    public R lock(
+            @ApiParam(value = "用户id", required = true)
+            @PathVariable("id") Long id,
+            @ApiParam(value = "状态", required = true)
+            @PathVariable("status") Integer status) {
+        userInfoService.lock(id, status);
+        return R.ok().message(status == 1?"解锁成功":"锁定成功");
+    }
 }
