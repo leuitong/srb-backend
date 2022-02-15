@@ -1,7 +1,9 @@
 package com.example.srb.core.service;
 
-import com.example.srb.core.pojo.entity.UserLoginRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.srb.core.pojo.entity.UserLoginRecord;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UserLoginRecordService extends IService<UserLoginRecord> {
 
+    List<UserLoginRecord> listTop50(Long userId);
 }
