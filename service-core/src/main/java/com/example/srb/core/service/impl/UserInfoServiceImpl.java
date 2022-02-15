@@ -1,6 +1,8 @@
 package com.example.srb.core.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.srb.base.utils.JwtUtils;
 import com.example.srb.common.exception.Assert;
@@ -12,11 +14,13 @@ import com.example.srb.core.mapper.UserLoginRecordMapper;
 import com.example.srb.core.pojo.entity.UserAccount;
 import com.example.srb.core.pojo.entity.UserInfo;
 import com.example.srb.core.pojo.entity.UserLoginRecord;
+import com.example.srb.core.pojo.query.UserInfoQuery;
 import com.example.srb.core.pojo.vo.LoginVO;
 import com.example.srb.core.pojo.vo.RegisterVO;
 import com.example.srb.core.pojo.vo.UserInfoVO;
 import com.example.srb.core.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,5 +111,31 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         // 返回用户信息对象
         return userInfoVO;
+    }
+
+    @Override
+    public IPage<UserInfo> listPage(Page<UserInfo> pageParam, UserInfoQuery userInfoQuery) {
+        if (userInfoQuery == null) {
+            return baseMapper.selectPage(pageParam, null);
+        }
+        String mobile = userInfoQuery.getMobile();
+        Integer userType = userInfoQuery.getUserType();
+        Integer status = userInfoQuery.getStatus();
+
+        QueryWrapper<UserInfo> userInfoQueryWrapper = new QueryWrapper<>();
+//        if (StringUtils.isNotBlank(mobile)) {
+//            userInfoQueryWrapper.eq("mobile", mobile);
+//        }
+//        if (userType != null) {
+//            userInfoQueryWrapper.eq("user_type", userType);
+//        }
+//        if (status != null) {
+//            userInfoQueryWrapper.eq("status", status);
+//        }
+        userInfoQueryWrapper
+                .eq(StringUtils.isNotBlank(mobile), "mobile", mobile)
+                .eq(userType != null, "user_type", userType)
+                .eq(status != null, "status", status);
+        return baseMapper.selectPage(pageParam, userInfoQueryWrapper);
     }
 }
