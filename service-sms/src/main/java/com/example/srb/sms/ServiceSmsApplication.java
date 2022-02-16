@@ -11,6 +11,5 @@ import org.springframework.context.annotation.ComponentScan;
 public class ServiceSmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceSmsApplication.class, args);
-
     }
 }

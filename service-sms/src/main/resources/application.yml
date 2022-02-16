@@ -31,6 +31,8 @@ feign:
       default:
         connectTimeout: 10000 #连接超时
         readTimeout: 600000  #执行超时
+  sentinel:
+    enabled: true
 
 #阿里云短信
 aliyun:
