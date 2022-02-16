@@ -25,6 +25,13 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000 #连接超时
+        readTimeout: 600000  #执行超时
+
 #阿里云短信
 aliyun:
   sms:
@@ -33,3 +40,8 @@ aliyun:
     key-secret: M5ePYOFVnOer32vJ0mhB0Qgb6QJOrk
     template-code: SMS_154950909
     sign-name: 阿里云短信测试
+
+#Openfeign日志级别
+logging:
+  level:
+    com.example.srb.sms.client.CoreUserInfoClient: DEBUG #以什么级别监控哪个接口
